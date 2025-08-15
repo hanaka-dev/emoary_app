@@ -14,8 +14,8 @@
   <a href="#-screens--mockups">Screens / Mockups</a> •
   <a href="#-roadmap">Roadmap</a> •
   <a href="#-tech-stack-planned">Tech Stack</a> •
-  <a href="#usage">Run locally</a> •
-  <a herf="#live-demo">Live Demo</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#live-demo">Live Demo</a> •
   <a href="#-ethics--privacy">Ethics & Privacy</a>
 </p>
 
