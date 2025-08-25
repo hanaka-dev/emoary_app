@@ -57,4 +57,8 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # テスト環境においてCSS圧縮を行わないように指示。こうしないとTailwindの構文が語解釈されRED
+  config.assets.css_compressor = nil
+  config.assets.compress = false
 end
