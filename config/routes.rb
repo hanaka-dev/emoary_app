@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
-  # usersのルーティング
-  get '/signup',  to: "users#new"
   
+  # 現在rootはhome
+  root "static_pages#home"
   # static_pagesのルーティング
   get '/help',    to: "static_pages#help"
   get '/home',    to: "static_pages#home"
-
-  # 現在rootはhome
-  root "static_pages#home"
+  # usersのルーティング
+  get '/signup',  to: "users#new"
+  resources :users
+  
 end

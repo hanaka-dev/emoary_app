@@ -22,6 +22,16 @@ emoary開発において、今後複雑になるであろうページ名、ル�
 - static_pagesとしてhome,helpの２種類を作成
 - helpには往復のリンクを貼った。(pencil-square,left-arrowアイコンを用いて)
 - **現在、rootはstatic_pages#homeとしてあるが、後々loginに切り替える予定。**
+- Userモデルと軽い制約を作成
+- Tailwindを導入　　　
+
+   　→　Tailwindで気をつけること
+      
+   - 基本的に自らCSSを書かずともhtmlのclass名から呼び出すことでスタイルの適用が可能。
+   - 自身で特別にCSSを記述する必要がある際には、assets/tailwind/application.cssに記述する。
+   - CSSを自力で記述するにしてもお作法がCSSとは異なるようなので注意
+   - フォントをインポートする際にはファイルのトップに置くこと
+
 ## Gemまとめ
 |名前|機能|
 |-|-|
@@ -36,7 +46,7 @@ emoary開発において、今後複雑になるであろうページ名、ル�
 |-|-|-|
 |static_pages_controller.rb|home|木が表示され全ページの真ん中となるページの表示|
 ||help|ヘルプページ表示|
-|users_controller.rb|new|新規ユーザー登録(Signups)|
+|users_controller.rb|new|新規ユーザー登録(Signup)|
 
 ## モデル
 ### User
