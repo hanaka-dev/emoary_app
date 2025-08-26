@@ -7,6 +7,6 @@ Rails.application.routes.draw do
   get '/home',    to: "static_pages#home"
   # usersのルーティング
   get '/signup',  to: "users#new"
-  resources :users
+  resources :users, only: [:new,:create, :show, :destroy]
   
 end

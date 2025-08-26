@@ -23,6 +23,8 @@ emoary開発において、今後複雑になるであろうページ名、ル�
 - helpには往復のリンクを貼った。(pencil-square,left-arrowアイコンを用いて)
 - **現在、rootはstatic_pages#homeとしてあるが、後々loginに切り替える予定。**
 - Userモデルと軽い制約を作成
+**2025/08/26**
+
 - Tailwindを導入　　　
 
    　→　Tailwindで気をつけること
@@ -31,6 +33,8 @@ emoary開発において、今後複雑になるであろうページ名、ル�
    - 自身で特別にCSSを記述する必要がある際には、assets/tailwind/application.cssに記述する。
    - CSSを自力で記述するにしてもお作法がCSSとは異なるようなので注意
    - フォントをインポートする際にはファイルのトップに置くこと
+
+- Signup(new,create)作成
 
 ## Gemまとめ
 |名前|機能|
@@ -67,5 +71,6 @@ emoary開発において、今後複雑になるであろうページ名、ル�
 |sattic_pages_controller_test.rb|静的ページのタイトル表示確認、ルートページ表示確認|
 |application_helper_test.rb|動的タイトル表示ヘルパー(application_helperのfull_title)の動作確認|
 |user_test.rb|ユーザー登録におけるユーザーの正当性確認|
+|users_signup_test|ユーザー登録におけるcreateがうまくいくか、activationできたかを確認|
 
 

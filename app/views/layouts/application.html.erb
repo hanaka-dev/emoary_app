@@ -14,8 +14,26 @@
 
   <body class="bg-green-50">
     <main class="container mx-auto">
+      <% flash.each do |type, message| %>
+  <% css =
+      case type.to_sym
+      when :success
+        "bg-blue-100 border border-blue-400 text-blue-700"
+      when :alert, :danger, :error
+        "bg-red-100 border border-red-400 text-red-700"
+      else
+        "bg-yellow-100 border border-yellow-400 text-yellow-700"
+      end %>
+
+  <div class="rounded px-4 py-3 mb-4 <%= css %>">
+    <%= message %>
+  </div>
+<% end %>
       <%= yield %>
       <%= debug(params) if Rails.env.development? %>
     </main>
   </body>
+
 </html>
+
+
