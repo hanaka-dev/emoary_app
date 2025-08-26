@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   # usersのルーティング
   get '/signup',    to: "users#new"
   get '/settings',  to: "users#show"
+  #sessionsのルーティング
+  get '/login',     to: "sessions#new"
+  post '/login',    to: "sesisons#create"
+  delete '/logout', to: "sessions#destroy"
+  
   resources :users, only: [:new,:create, :show, :destroy]
   
 end
