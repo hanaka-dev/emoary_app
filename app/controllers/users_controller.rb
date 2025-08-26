@@ -2,7 +2,8 @@ class UsersController < ApplicationController
 
   # ユーザー情報の表示(Settings)
   def show
-    @user = User.find(params[:id])
+    # 仮。後々ログイン中のユーザーのものに置き換える。
+    @user = User.first
   end
 
   # ユーザーの登録/表示(Signup)
