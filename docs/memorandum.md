@@ -35,6 +35,9 @@ emoary開発において、今後複雑になるであろうページ名、ル�
    - フォントをインポートする際にはファイルのトップに置くこと
 
 - Signup(new,create)作成
+- TLSを用いるように変更(httpsに)
+- HTTPサーバー(Puma)を本番環境で用いるように設定
+- データベースとしてPostgreSQLを用いるようにpgを追加
 
 ## Gemまとめ
 |名前|機能|
@@ -45,6 +48,7 @@ emoary開発において、今後複雑になるであろうページ名、ル�
 |bootstrap-will_paginate|will_paginateをBootstrap風に整える|
 |bootstrap-sass|Bootstrapを使うためのGem|
 |heroicon|アイコン表示用|
+|pg|production環境でPostgreSQLを用いるためのGem|
 ## コントローラー
 |コントローラー名|アクション名|機能|
 |-|-|-|
