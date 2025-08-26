@@ -55,6 +55,9 @@ emoary開発において、今後複雑になるであろうページ名、ル�
 |static_pages_controller.rb|home|木が表示され全ページの真ん中となるページの表示|
 ||help|ヘルプページ表示|
 |users_controller.rb|new|新規ユーザー登録(Signup)|
+||create|ユーザー作成|
+||show|ユーザー情報の表示(Setting)|
+|sessions_controller.rb|new|セッションの登録(login)|
 
 ## モデル
 ### User
