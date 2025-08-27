@@ -22,12 +22,12 @@
         <%= form_with model: @user, url: settings_path, method: :patch, class: "mx-auto my-auto w-full" do |f|%>
             <div class="w-full">
                 <h1 class="text-4xl font-semibold text-black text-center my-4">Profile</h1>
-                <div class="border-b border-gray-900/10 p-12 justify-items-center mb-6">
+                <div class="border-b border-gray-900/10 p-12 flex justify-items-center mb-6">
                     <%= gravatar_for @user %>
                 </div>
 
                 <div class="border-b border-gray-900/10 pb-12 justify-items-center ">
-                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 items-stretch w-1/2">
+                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 items-stretch mx-auto w-1/2">
                         <div class="w-full ">
                             <%= f.label :name, "Name", class: "block text-sm/6 font-medium text-gray-900" %>
                             <div class="mt-2">

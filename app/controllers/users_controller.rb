@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   def show
     # 仮。後々ログイン中のユーザーのものに置き換える。
     @user = User.first
-    #@user = current_user
+    # @user = current_user
     @edit_mode = params[:edit].present?
   end
 
