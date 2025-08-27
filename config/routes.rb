@@ -4,16 +4,17 @@ Rails.application.routes.draw do
 
   root "sessions#new"
   # static_pagesのルーティング
-  get '/help',      to: "static_pages#help"
-  get '/home',      to: "static_pages#home"
+  get '/help',        to: "static_pages#help"
+  get '/home',        to: "static_pages#home"
   # usersのルーティング
-  get '/signup',    to: "users#new"
-  get '/settings',  to: "users#show"
+  get '/signup',      to: "users#new"
+  get '/settings',    to: "users#show"
+  patch '/settings',  to: "users#update"
   #sessionsのルーティング
-  get '/login',     to: "sessions#new"
-  post '/login',    to: "sessions#create"
-  delete '/logout', to: "sessions#destroy"
+  get '/login',       to: "sessions#new"
+  post '/login',      to: "sessions#create"
+  delete '/logout',   to: "sessions#destroy"
   
-  resources :users, only: [:new,:create, :show, :destroy, :edit]
+  resources :users, only: [:new,:create, :show, :destroy, :edit, :update]
   
 end
