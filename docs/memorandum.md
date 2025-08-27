@@ -89,8 +89,14 @@ emoary開発において、今後複雑になるであろうページ名、ル�
 |current_user|sessions_helper.rb|〃|インスタンス変数@current_userが空であれば、データベースからsessionsハッシュの:user_idのidを持つユーザーをそこに代入する。|
 |logged_in?|sessions_helper.rb|〃|ログインしてればtrue,してなければfalseを返す。|
 |log_out|sessions_helper.rb|〃|現在のユーザーをログアウトする。|
-|(private)downcase_email|user.rb|userモデルで生成されたインスタンスからのみ|メールアドレスを小文字にする。|
+|**remember**(remember (user))|sessions_helper.rb|〃|永続的セッションのためにユーザーをデータベースに記憶する|
+|**forget**(forget (user))|sessions_helper.rb|〃|永続的セッションを放棄する|
+|(private)downcase_email|user.rb|userモデル内のみ|メールアドレスを小文字にする。|
+|**remember** (user.remember)|user.rb|userモデルで生成されたインスタンスからのみ|remember_tokenの取得、remember_digestの保存|
+|**forget**(user.forget)|user.rb|〃|ユーザーのログイン情報を放棄する|
+|authenticated?|user.rb|〃|渡されたトーけんがダイジェストと一致したらtrue|
 |User.digest(string)|user.rb|userモデルオブジェクトからのみ|与えられた文字列をハッシュ化する|
+|User.new_token|user.rb|〃|ランダムなトークンを返す。|
 |is_logged_in?|test_helper.rb|テストフォルダ内でのみ有効|テストユーザーがログインしてればtrue,してなければfalseを返す。|
 
 
