@@ -1,6 +1,8 @@
 <% provide(:title, "Settings")%>
-<h1>
-    <%= @user.name %>
-    <%= gravatar_for @user%>
-</h1>
-<%= @user.email %>
+
+
+<% if @edit_mode %>   
+    <%= render "edit_profile"%>
+<% else %>
+    <%= render "profile"%>
+<% end %>

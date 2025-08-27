@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   get 'sessions/new'
   
-  # 現在rootはhome
-  root "static_pages#home"
+
+  root "sessions#new"
   # static_pagesのルーティング
   get '/help',      to: "static_pages#help"
   get '/home',      to: "static_pages#home"
@@ -11,9 +11,9 @@ Rails.application.routes.draw do
   get '/settings',  to: "users#show"
   #sessionsのルーティング
   get '/login',     to: "sessions#new"
-  post '/login',    to: "sesisons#create"
+  post '/login',    to: "sessions#create"
   delete '/logout', to: "sessions#destroy"
   
-  resources :users, only: [:new,:create, :show, :destroy]
+  resources :users, only: [:new,:create, :show, :destroy, :edit]
   
 end

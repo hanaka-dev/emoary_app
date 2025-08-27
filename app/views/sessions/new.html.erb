@@ -1,4 +1,12 @@
-<div>
-  <h1 class="font-bold text-4xl">Sessions#new</h1>
-  <p>Find me in app/views/sessions/new.html.erb</p>
-</div>
+<% provide(:title, "Log in") %>
+<% provide(:button_text, "Log in") %>
+
+
+<div class="min-h-screen justify-center items-stretch flex flex-col mx-auto max-w-2xl"> 
+    <h1 class="text-6xl text-center text-green-800 m-2">Welcome to emoary</h1>
+    <div class="bg-gray-200 rounded-3xl px-20 py-10  ">
+      <h2 class="text-3xl font-bold text-center">Log in</h2>
+      <%= render "login_form"%>
+    </div>
+  </div>
+

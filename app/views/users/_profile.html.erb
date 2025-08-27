@@ -1,0 +1,66 @@
+<!-- 表示モード: -->
+<div class="min-h-screen mx-auto my-auto flex flex-col items-center justify-center w-full">
+    <div class="  bg-white rounded-lg shadow-md  max-w-xl  items-stretch w-full">
+        <div class="flex justify-between">
+            <div class="ml-2 mt-2">
+                <%= link_to home_path, class: "inline-block" do %>
+                <%= heroicon "arrow-left",
+                                variant: :outline,
+                                options: { width: 48, height: 48, class: "text-gray-500" } %>
+                <% end %>   
+            </div>
+            <div>
+                <%= link_to help_path, class: "inline-block" do %>
+                    <%= heroicon "question-mark-circle",
+                                variant: :outline,
+                                options: { width: 48, height: 48, class: "stroke-gray-500" } %>
+                <% end %>   
+            </div>
+        </div>
+        <form class="mx-auto my-auto w-full">
+            <div class="w-full">
+                <h1 class="text-4xl font-semibold text-black text-center my-4">Profile</h1>
+                <div class="border-b border-gray-900/10 p-12 justify-items-center mb-6">
+                    <%= gravatar_for @user %>
+                </div>
+
+                <div class="border-b border-gray-900/10 pb-12 justify-items-center ">
+
+                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 items-stretch w-1/2">
+                        <div class="w-full ">
+                            <label for="name" class="block text-sm/6 font-medium text-gray-900">Name</label>
+                            <div class="mt-2">
+                                <input id="name" type="text" name="name" value="<%= @user.name%>" disabled class="block w-full rounded-md bg-gray-100 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 sm:text-sm/6" />
+                            </div>
+                        </div>
+
+
+                        <div class="w-full">
+                            <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>
+                            <div class="mt-2">
+                                <input id="email" type="email" name="email" value="<%= @user.email%>" disabled class="block w-full rounded-md bg-gray-100 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 sm:text-sm/6" />
+                            </div>
+                        </div>
+
+                        <% user_country = (@user.try(:country) || "us") %>
+                        <div class="w-full">
+                            <label for="country" class="block text-sm font-medium text-gray-900">Country</label>
+                            <div class="mt-2">
+                                <select id="country" disabled
+                                        class="block w-full rounded-md bg-gray-100 py-1.5 pl-3 pr-8 text-base text-gray-900 border border-gray-300 sm:text-sm">
+                                    <option value="us" selected>United States</option>
+                                    <option value="jp">Japan</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            <div class="m-6 flex justify-between">
+                <%= link_to "Edit Profile", settings_path(edit: 1), class: "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ml-30" %>
+                <%= link_to "Log out", logout_path, data: { "turbo-method": :delete}, class: "text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mr-30"%>
+            </div>
+        </form>
+    </div>
+</div>

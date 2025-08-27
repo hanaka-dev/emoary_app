@@ -58,6 +58,8 @@ emoary開発において、今後複雑になるであろうページ名、ル�
 ||create|ユーザー作成|
 ||show|ユーザー情報の表示(Setting)|
 |sessions_controller.rb|new|セッションの登録(login)|
+||create|セッションの作成|
+||destroy|セッションの削除|
 
 ## モデル
 ### User
@@ -79,5 +81,16 @@ emoary開発において、今後複雑になるであろうページ名、ル�
 |application_helper_test.rb|動的タイトル表示ヘルパー(application_helperのfull_title)の動作確認|
 |user_test.rb|ユーザー登録におけるユーザーの正当性確認|
 |users_signup_test|ユーザー登録におけるcreateがうまくいくか、activationできたかを確認|
+
+## 関数
+|関数名|所属|効果範囲|説明|
+|-|-|-|-|
+|log_in(user)|sessions_helper.rb|application_controller.rbにincludeされているため、全コントローラ、ビューで使用可能|sessionハッシュの:user_idにユーザーのidを与える。|
+|current_user|sessions_helper.rb|〃|インスタンス変数@current_userが空であれば、データベースからsessionsハッシュの:user_idのidを持つユーザーをそこに代入する。|
+|logged_in?|sessions_helper.rb|〃|ログインしてればtrue,してなければfalseを返す。|
+|log_out|sessions_helper.rb|〃|現在のユーザーをログアウトする。|
+|(private)downcase_email|user.rb|userモデルで生成されたインスタンスからのみ|メールアドレスを小文字にする。|
+|User.digest(string)|user.rb|userモデルオブジェクトからのみ|与えられた文字列をハッシュ化する|
+|is_logged_in?|test_helper.rb|テストフォルダ内でのみ有効|テストユーザーがログインしてればtrue,してなければfalseを返す。|
 
 

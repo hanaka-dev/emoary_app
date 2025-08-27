@@ -4,6 +4,8 @@ class UsersController < ApplicationController
   def show
     # 仮。後々ログイン中のユーザーのものに置き換える。
     @user = User.first
+    #@user = current_user
+    @edit_mode = params[:edit].present?
   end
 
   # ユーザーの登録/表示(Signup)
@@ -20,6 +22,19 @@ class UsersController < ApplicationController
       redirect_to root_url
     else
       render "new", status: :unprocessable_entity
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @user.update(user_paramas)
+      flash[:success] = "Profile updated"
+      redirect_to settings_path
+    else
+      @edit_mode = true
+      render :show, status: :unprocessable_entity
     end
   end
 
