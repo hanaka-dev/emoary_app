@@ -59,7 +59,8 @@
                 
             <div class="my-6 flex flex-col justify-center">
                 <%= link_to "Edit Profile", settings_path(edit: 1), class: "text-white text-center bg-blue-700 w-1/2 my-2 mx-auto hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" %>
-                <%= link_to "Log out", logout_path, data: { "turbo-method": :delete}, class: "text-white text-center bg-red-700 w-1/2 my-2 mx-auto hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 flex-right"%>
+                <%= link_to "Log out", logout_path, data: { "turbo-method": :delete}, class: "text-white text-center bg-red-700 w-1/2 my-2 mx-auto hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"%>
+                <%= link_to "Delete Account", "#", data: { "turbo-method": :delete}, class: "text-white text-center bg-black w-1/2 my-2 mx-auto hover:bg-yellow-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"%>
             </div>
             
         </form>

@@ -1,8 +1,7 @@
-<% provide(:title, "Settings")%>
-
-
 <% if @edit_mode %>   
+    <% provide(:title, "Edit")%>
     <%= render "edit_profile"%>
 <% else %>
+    <% provide(:title, "Settings")%>
     <%= render "profile"%>
 <% end %>

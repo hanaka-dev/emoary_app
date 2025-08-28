@@ -1,5 +1,5 @@
 <% if object.errors.any? %>
-    <div class="bg-red-100 m-2">
+    <div id="error_explanation" class="bg-red-100 m-2">
         <div class="text-red-800 font-bold  text-1xl">
             The form contains <%= pluralize(object.errors.count, "error")%>.
         </div>
