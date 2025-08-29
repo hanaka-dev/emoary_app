@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get '/signup',      to: "users#new"
   get '/settings',    to: "users#show"
   patch '/settings',  to: "users#update"
+  delete '/settings', to: "users#destroy"
   #sessionsのルーティング
   get '/login',       to: "sessions#new"
   post '/login',      to: "sessions#create"

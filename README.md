@@ -78,8 +78,8 @@ You can try emoary here: [https://example.com](https://example.com)  ←Coming S
 No installation is required — just open the link and start recording your emotions!
 
 ## Live Demo
-Coming soon! The app is currently being prepared for deployment.  
-Please check back later for the live URL.
+The app is currently being prepared for deployment.  
+https://emoary-app.onrender.com
 
 
 
