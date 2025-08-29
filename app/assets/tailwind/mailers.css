@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* 必要最小限のユーティリティ/部品だけ */
+@layer components {
+    .btn-primary { @apply inline-block px-4 py-2 rounded bg-blue-600 text-white; }
+    .card       { @apply w-full max-w-md mx-auto rounded-lg shadow p-6 bg-white; }
+}

@@ -4,9 +4,8 @@ class UsersLogin < ActionDispatch::IntegrationTest
   
   def setup
     @user = users(:michael)
-  end
+  end  
 end
-
 
 class InvalidPasswordTest < UsersLogin
   test "login path" do
@@ -40,6 +39,7 @@ class ValidLoginTest < ValidLogin
   assert is_logged_in?
   assert_redirected_to home_path
   end
+
 end
 
 class Logout < ValidLogin
@@ -57,6 +57,7 @@ class LogoutTest < Logout
     assert_response :see_other
     assert_redirected_to root_url
   end
+
 
   test "should still work after logout in second window" do
     delete logout_path
@@ -78,4 +79,3 @@ class RemeberingTest < UsersLogin
     assert cookies[:remember_token].blank?
   end
 end
-

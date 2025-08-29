@@ -4,4 +4,7 @@ set -o errexit
 bundle install
 bundle exec rails assets:precompile
 bundle exec rails assets:clean
-bundle exec rails db:migrate
+# ユーザーのデータを貯めるならこっち
+# bundle exec rails db:migrate
+# ユーザーデータのリセットをありにするならこっち
+DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails db:migrate:reset

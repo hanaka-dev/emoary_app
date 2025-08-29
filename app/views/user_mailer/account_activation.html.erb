@@ -1,0 +1,12 @@
+<div class="card">
+  <img src="<%= image_url('emoary_logo.png')  %>" width="270" height="90" alt="Logo">
+  <h1>Please activate your account</h1>
+  <p>Hi <%= @user.name %>, Welcome to emoary!</p>
+
+  <p>
+  Verify your email address to start using emoary
+  Click on the link below to activate your account:
+  </p>
+
+  <%= link_to "Activate", edit_account_activation_url(@user.activation_token, email: @user.email), class: "btn-primary" %>
+</div>

@@ -28,7 +28,8 @@ Rails.application.configure do
   config.assets.css_compressor = nil
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  # mailers.cssを見つけてもらうためにtrue
+  config.assets.compile = true
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
@@ -66,7 +67,20 @@ Rails.application.configure do
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.delivery_method = :smtp
+  host = "https://emoary_app.onrender.com"
+  config.action_mailer.default_url_options = {  host: host  }
+  ActionMailer::Base.smtp_settings = {
+    :port           =>   587,
+    :address        =>  'smtp.mailgun.org',
+    :user_name      =>  ENV['MAILGUN_SMTP_LOGIN'],
+    :password       =>  ENV['MAILGUN_SMTP_PASSWORD'],
+    :domain         =>  host,
+    :authenticaion  =>  plain,
+
+
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
