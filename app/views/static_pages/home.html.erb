@@ -1,33 +1,43 @@
 <% provide(:title, "Home") %>
-<h1>Home</h1>
-<div>
-    <p>ホームページ準備中!helpに飛んで戻ってこられる!</p>
+
+<section class="relative min-h-screen">
     <div>
-        <%= link_to help_path, class: "inline-block" do %>
-            <%= heroicon "question-mark-circle",
-                        variant: :outline,
-                        options: { width: 48, height: 48, class: "stroke-gray-500" } %>
-        <% end %>   
-        <br>
-        <p>Help</p>
+        <div class="absolute top-[3%] right-[3%]">
+            <div class="inline-flex w-15 h-15 item-center justify-center ">
+                <%= link_to help_path, class: "inline-block" do %>
+                    <%= heroicon "question-mark-circle",
+                                variant: :outline,
+                                options: { width: 48, height: 48, class: "stroke-black-500" } %>
+                <% end %>   
+            </div>
+        </div>
+        <div class="absolute bottom-[5%] right-[8%] flex flex-col justify-center ">
+            <div class="inline-flex w-16 h-16 rounded-full bg-yellow-200 item-center justify-center shadow flex mx-auto">
+                <%= link_to "#", class: "inline-block  w-12 h-13 justify-center mx-auto my-auto" do %>
+                    <%= heroicon "pencil-square",
+                                variant: :outline,
+                                options: { width: 48, height: 48, class: "stroke-black-500" } %>
+                <% end %>
+            </div>
+            <p class="text-center justify-items-center font-type justify-center">Write a diary</p>
+        </div>
+        <div class="absolute top-[8%] right-[8%]">
+            <div class="inline-flex w-15 h-15 item-center justify-center ">
+                <%= link_to settings_path , class: "inline-block" do %>
+                    <%= heroicon "cog-8-tooth",
+                                variant: :outline,
+                                options: { width: 48, height: 48, class: "stroke-black-500" } %>
+                <% end %>
+            </div>
+        </div>
+        <div class="flex min-h-screen">
+            <div class="justify-center mx-auto my-auto w-[60%] ">
+                        <%#= render inline: Rails.root.join('app/assets/images/sprout.svg').read %>
+                        <%#= render inline: Rails.root.join('app/assets/images/leaves.svg').read %>
+                        <%= render inline: Rails.root.join('app/assets/images/tree.svg').read %>
+
+            </div>
+        </div>
     </div>
-    <div>
-        <%= link_to "#", class: "inline-block" do %>
-            <%= heroicon "pencil-square",
-                        variant: :outline,
-                        options: { width: 48, height: 48, class: "stroke-gray-500" } %>
-        <% end %>
-        <br>
-        <p>Write a diary</p>
-    </div>
-    <div>
-        <%#= link_to user_path(@user) , class: "inline-block" do %>
-        <%= link_to settings_path , class: "inline-block" do %>
-            <%= heroicon "cog-8-tooth",
-                        variant: :outline,
-                        options: { width: 48, height: 48, class: "stroke-gray-500" } %>
-        <% end %>
-        <br>
-        <p>Settings</p>
-    </div>
-</div>
+</section>
+
