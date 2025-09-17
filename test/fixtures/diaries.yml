@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: michael
+  emo_1: 1
+  emo_2: 2
+  emo_3: 3
+  rate_1: 50
+  rate_2: 30
+  rate_3: 20
+  content: "It was a happy day."
+  flag: true
+  day_no: 1
+  seq_no: 1
+  created_at: <%=10.minutes.ago%>
+  updated_at: <%=5.minutes.ago%>
+

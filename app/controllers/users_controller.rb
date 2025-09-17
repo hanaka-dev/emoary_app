@@ -3,8 +3,6 @@ class UsersController < ApplicationController
 
   # ユーザー情報の表示(Settings)
   def show
-    # 仮。後々ログイン中のユーザーのものに置き換える。
-    #@user = User.first
     @user = current_user
     @edit_mode = params[:edit].present?
   end

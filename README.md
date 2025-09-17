@@ -80,6 +80,10 @@ No installation is required — just open the link and start recording your emot
 ## Live Demo
 The app is currently being prepared for deployment.  
 https://emoary-app.onrender.com
+If you want to use this app without having your account, use the account below.
+
+email: nogi564@bangban.uk
+password: foobar
 
 
 
