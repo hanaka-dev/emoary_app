@@ -86,50 +86,72 @@ class DiaryTest < ActiveSupport::TestCase
     end
   end
 
+  # emoは1から順に詰まっているべき
+  test "emo2 should not be empty when emo3 exists" do
+    @diary.assign_attributes(emo_2:nil, rate_2:nil, rate_3:50)
+    assert_not @diary.valid?
+  end
+
   # rateの値は1以上100以下
   test "rate_1 should be grater than 0" do
     if !@diary.emo_1.nil?
-      @diary.rate_1=0
+      @diary.assign_attributes(emo_3:nil, rate_1: 0, rate_2: 100, rate_3:0)
       assert_not @diary.valid?
+      @diary.assign_attributes(emo_3:nil, rate_1: 1, rate_2: 99, rate_3:0)
+      assert @diary.valid?
     end
   end
   test "rate_1 should be less than 101" do
     if !@diary.emo_1.nil?
-      @diary.rate_1=101
+      @diary.assign_attributes(emo_2:nil, emo_3:nil, rate_1: 100, rate_2: 0, rate_3:0)
+      assert @diary.valid?
+      @diary.assign_attributes(emo_2:nil, emo_3:nil, rate_1: 101, rate_2: 0, rate_3:0)
       assert_not @diary.valid?
     end
   end
 
   test "rate_2 should be grater than 0" do
     if !@diary.emo_2.nil?
-      @diary.rate_2=0
+      @diary.assign_attributes(emo_3:nil, rate_1: 100, rate_2: 0, rate_3:0)
       assert_not @diary.valid?
+      @diary.assign_attributes(emo_3:nil, rate_1: 99, rate_2: 1, rate_3:0)
+      assert @diary.valid?
     end
   end
-  test "rate_2 should be less than 101" do
+  test "rate_2 should be less than 100" do
     if !@diary.emo_2.nil?
-      @diary.rate_2=101
+      @diary.assign_attributes(emo_3:nil, rate_1: 0, rate_2: 100, rate_3:0)
       assert_not @diary.valid?
+      @diary.assign_attributes(emo_3:nil, rate_1: 1, rate_2: 99, rate_3:0)
+      assert @diary.valid?
     end
   end
 
   test "rate_3 should be grater than 0" do
     if !@diary.emo_3.nil?
-      @diary.rate_3=0
+      @diary.assign_attributes(emo_2:nil, rate_1: 100, rate_2: 0, rate_3:0)
       assert_not @diary.valid?
+      @diary.assign_attributes(emo_2: 2, emo_3: 3, rate_1: 98, rate_2: 1, rate_3:1)
+      assert @diary.valid?
     end
   end
-  test "rate_3 should be less than 101" do
+  test "rate_3 should be less than 100" do
     if !@diary.emo_3.nil?
-      @diary.rate_3=101
+      @diary.assign_attributes(emo_1:nil, emo_2:nil, rate_1: 0, rate_2: 0, rate_3:100)
       assert_not @diary.valid?
+      @diary.assign_attributes(emo_1:1, emo_2:2, rate_1: 1, rate_2: 1, rate_3:98)
+      assert @diary.valid?, @diary.errors.full_messages.to_sentence
     end
   end
-  
+
   # rateの合計値は100
-  test "sum of rates should be 100" do
+  test "sum of rates should not be anything other than 100" do
     @diary.rate_1=0
     assert_not @diary.valid?
+  end
+  
+  test "sum of rates should be 100" do 
+    assert @diary.valid?
   end
 
   

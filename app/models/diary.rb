@@ -10,6 +10,7 @@ end
 class Diary < ApplicationRecord
   belongs_to :user
   validates :emo_1, presence: true
+  validates :emo_2, presence: true, if: -> { emo_present?(:emo_3) }
   validate :emotions_are_unique
   validates :rate_1, presence: true, numericality: {greater_than:0, less_than_or_equal_to:100}
   validates :rate_2, presence: true, numericality: {greater_than:0, less_than_or_equal_to:100}, if: ->{emo_present?(:emo_2)}
@@ -25,6 +26,7 @@ class Diary < ApplicationRecord
   def emo_present?(attr)
     public_send(attr).present?
   end
+
 
   def emotions_are_unique
     emos=[emo_1,emo_2,emo_3].compact
