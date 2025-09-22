@@ -82,7 +82,7 @@ The app is currently being prepared for deployment.
 https://emoary-app.onrender.com
 If you want to use this app without having your account, use the account below.
 
-email: nogi564@bangban.uk
+email: nogi564@bangban.uk   
 password: foobar
 
 
