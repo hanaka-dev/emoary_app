@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "emoary.app"
+  default from: "noreply@mg.emoary.app"
   layout "mailer"
 end
