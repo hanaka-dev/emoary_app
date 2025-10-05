@@ -1,0 +1,25 @@
+emotions:
+  1: 
+    key: joy
+    color: "#ffec47"
+  2:
+    key: trust
+    color: "#c7dc68"
+  3: 
+    key: fear
+    color: "#65318e"
+  4:
+    key: surprise
+    color: "#f7fcfe"
+  5: 
+    key: sadness
+    color: "#164a84"
+  6: 
+    key: disgust
+    color: "#8c6450"
+  7: 
+    key: anger
+    color: "#e2041b"
+  8: 
+    key: anticipation
+    color: "#f6bfbc"

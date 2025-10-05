@@ -74,12 +74,13 @@
 - Deployment: Render 
 
 ## Usage
-You can try emoary here: [https://example.com](https://example.com)  ←Coming Soon!  
+You can try emoary here: [https://emoary.app] 
 No installation is required — just open the link and start recording your emotions!
 
 ## Live Demo
 The app is currently being prepared for deployment.  
 https://emoary-app.onrender.com
+https://emoary.app
 If you want to use this app without having your account, use the account below.
 
 email: nogi564@bangban.uk   

@@ -1,0 +1,1 @@
+EMOTIONS = YAML.load_file(Rails.root.join("config/emotions.yml"))[:emotions]

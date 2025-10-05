@@ -22,6 +22,21 @@ class Diary < ApplicationRecord
   validates :seq_no, presence: true
 
 
+  # 感情情報の取り出し(emo_1~emo_3のいずれかの特定、呼び出し)
+  def emo_data(n)
+    EMOTIONS[self["emo_#{n}"]]
+  end
+  # 感情の名前の取り出し
+  def emo_name(n)
+    key = emo_data(n)[:key]
+    I18n.t("emotions.#{key}")
+  end
+  # 感情の色の取り出し
+  def emo_color(n)
+    emo_date(n)[:color]
+  end
+
+
   private 
   def emo_present?(attr)
     public_send(attr).present?

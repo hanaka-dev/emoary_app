@@ -99,4 +99,17 @@ emoary開発において、今後複雑になるであろうページ名、ル�
 |User.new_token|user.rb|〃|ランダムなトークンを返す。|
 |is_logged_in?|test_helper.rb|テストフォルダ内でのみ有効|テストユーザーがログインしてればtrue,してなければfalseを返す。|
 
+# ymlのお作法！
+```
+<% EMOTIONS.each do |id, data|%>
+            <% emo_name=data['key'] %>
+            <h2 style="color:<%= data['color'] %>"><%=I18n.t("emotions.#{emo_name}")%></h2>            
+<%end%>
+```
+## 注意点
+- ハッシュのキーの呼び出しの際、キーは文字列として扱われることからシンボルではなくクオーテーションを用いること
+- load_fileでymlファイルを読み込むとこの仕様(クオーテーション型)になるみたい
+- ymlファイルの読み込みはconfig/initializers/emotions.rbにあり、load_fileすると、一番外側を読み取る。emotionsの中にidさらに中にkey,colorがある場合、普通にloadにすると、ここからkeyやcolorを指定しても参照することが叶わないため、emotionsを指定してあると言うわけ
+- 現開発環境では、EMOTIONS[id][key]などで呼べる。
+
 
