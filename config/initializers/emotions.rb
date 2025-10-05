@@ -1,1 +1,1 @@
-EMOTIONS = YAML.load_file(Rails.root.join("config/emotions.yml"))[:emotions]
+EMOTIONS = YAML.load_file(Rails.root.join("config/emotions.yml"))[:emotions].deep_symbolize_keys
