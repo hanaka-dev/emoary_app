@@ -4,7 +4,6 @@
     <h1 class="text-4xl text-center">Choose your emotion !</h1>
     <div>
         <% EMOTIONS.each do |id, data|%>
-            <%#= data.inspect %>
             <% emo_name=data['key'] %>
             <h2 style="color:<%= data['color'] %>"><%=I18n.t("emotions.#{emo_name}")%></h2>            
         <%end%>
