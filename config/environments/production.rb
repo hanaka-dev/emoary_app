@@ -68,19 +68,25 @@ Rails.application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.delivery_method = :smtp
   host = "https://emoary.app"
   config.action_mailer.default_url_options = {  host: host  }
-  ActionMailer::Base.smtp_settings = {
-    :port           =>   587,
-    :address        =>  'smtp.mailgun.org',
-    :user_name      =>  ENV['MAILGUN_SMTP_LOGIN'],
-    :password       =>  ENV['MAILGUN_SMTP_PASSWORD'],
-    :domain         =>  host,
-    :authentication  =>  :plain,
-
-
+  # ActionMailer::Base.smtp_settings = {
+  #   :port           =>   587,
+  #   :address        =>  'smtp.mailgun.org',
+  #   :user_name      =>  ENV['MAILGUN_SMTP_LOGIN'],
+  #   :password       =>  ENV['MAILGUN_SMTP_PASSWORD'],
+  #   :domain         =>  host,
+  #   :authentication  =>  :plain,
+  # }
+  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.mailgun_settings = {
+    api_key: ENV["MAILGUN_API_KEY"],
+    domain: "mg.emoary.app",
+    api_host: "api.mailgun.net" # USリージョン
   }
+  config.action_mailer.perform_deliveries = true
+  
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
