@@ -52,6 +52,10 @@ end
 
 gem "heroicon", "~> 1.0"
 
-gem "tailwindcss-rails", "~> 4.3"
 gem "premailer-rails"
 gem "mailgun-ruby"
+
+# スライダーUI用
+gem 'shadcn-ui', '~> 0.0.13'
+
+gem "tailwindcss-rails", "~> 2.0"

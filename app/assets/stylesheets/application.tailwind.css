@@ -1,0 +1,2 @@
+/* shadcn-uiにtailwindを認識してもらうため、形式的に導入 */
+@import "tailwind/application.css";
