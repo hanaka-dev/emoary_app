@@ -2,17 +2,65 @@
 <%= form_with(model: @diary, class: "w-full") do |f|%>
     <%= render "shared/error_messages", object: f.object %>
     <h1 class="text-4xl text-center">Choose your emotion !</h1>
-    <div>
-        <% EMOTIONS.each do |id, data|%>
-            <% emo_name=data['key'] %>
-            <h2 style="color:<%= data['color'] %>"><%=I18n.t("emotions.#{emo_name}")%></h2>            
-        <%end%>
+    <div class= "flex flex-col w-full">
+        <div class="flex flex-col mr-10 my-10">
+            <% EMOTIONS.each do |id, data|%>
+                <% emo_name=data['key'] %>
+                <h2 style="color:<%= data['color'] %>"><%=I18n.t("emotions.#{emo_name}")%></h2>            
+            <%end%>
+        </div>
+        <div class="flex-col my-10 w-full">
+            <div id="chip1" class="relative items-center rounded-md flex bg-black-800 py-0.5 border-black text-sm text-black transition-all shadow-sm flex">
+
+                <button
+                    class="flex bg-black justify-center transition-all p-1 rounded-md text-white"
+                    type="button"
+                    onclick="showChip('chip2','chip1')"
+                >
+                    <span>Add⭐️ </span>
+                    <div class="inline-flex w-3 h-3 item-right justify-right">
+                        <%= heroicon "x-mark",
+                            variant: :outline,
+                            options: { width: 16, height: 16, class: "stroke-black-500" } %>
+
+                    </div>
+
+                </button>
+            </div>
+            <%= javascript_include_tag "chip_button" %>
+
+        </div>
+        </div>
+        
+        <div class="flex-col my-10 w-full">
+            <div id="chip2" style="display:none" class="relative items-center rounded-md flex bg-black-800 py-0.5 border-black text-sm text-black transition-all shadow-sm flex">
+                
+                <button
+                    class="flex bg-black justify-center transition-all p-1 rounded-md text-white"
+                    type="button"
+                    onclick="showChip('chip1','chip2')"
+                >
+                    <span>Delete❤️ </span>
+                    <div class="inline-flex w-3 h-3 item-right justify-right">
+                        <%= heroicon "x-mark",
+                            variant: :outline,
+                            options: { width: 16, height: 16, class: "stroke-black-500" } %>
+
+                    </div>
+
+                </button>
+                <div class="flex w-full">
+                    <%= render_slider name: "success", class: "w-full" %>
+                </div>
+            </div>
+            <%= javascript_include_tag "chip_button" %>
+
+        </div>
+        <div class="mb-5 flex-col my-10">
+            <%= f.label :content, "Event", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+            <%= f.text_field :content, class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "What happens, today?" %>
+        </div>
     </div>
-    <div class="mb-5">
-        <%= f.label :content, "Event", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
-        <%= f.text_field :content, class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "What happens, today?" %>
-    </div>
-    
     <div class="flex flex-col">
     <%= f.submit yield(:button_text), class: "text-white bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 block my-2 w-full"%>
 <% end %>
