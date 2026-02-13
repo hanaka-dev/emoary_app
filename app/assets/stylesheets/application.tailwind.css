@@ -1,2 +1,145 @@
-/* shadcn-uiにtailwindを認識してもらうため、形式的に導入 */
-@import "tailwind/application.css";
+/* Tailwind メインエントリ（tailwindcss-rails 標準構成） */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* フォント読み込み（emoary用） */
+@import url('https://fonts.googleapis.com/css2?family=Cutive&family=Hepta+Slab:wght@1..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cutive&family=Hepta+Slab:wght@1..900&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cutive&family=Hepta+Slab:wght@1..900&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+:root {
+  --font-type: "Zilla Slab", "Hepta Slab", "Josefin Slab", serif;
+}
+
+h1,
+h2 {
+  font-family: var(--font-type);
+}
+
+/* emoary Aチップ: 背景・文字固定。ホバー時はBチップ同様の感情色に（--chip-hover-color をビューでセット） */
+.emotion-chip {
+  font-family: var(--font-type);
+  background-color: #8d6449;
+  color: #ffffff;
+  border-radius: 9999px;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+}
+.emotion-chip:hover {
+  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), var(--chip-hover-color, #8d6449);
+}
+
+/* Aチップ選択時: 茶色に半透明の黒を重ねた背景（やや暗め）。チェックマークを左に、ラベルは残り領域の中央 */
+.emotion-chip.selected {
+  background: linear-gradient(rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.42)), #8d6449;
+}
+.emotion-chip.selected .chip-icon {
+  order: -1;
+  position: relative;
+  min-width: 1em;
+  min-height: 1em;
+}
+/* 白い線で描くチェックマーク（border + rotate） */
+.emotion-chip.selected .chip-icon::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 5px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* 葉: leaf.svg の形。diaries/UI ブランチに合わせ width:100% max-width:600px */
+.leaf-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.leaf-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  color: #2c2c2c;
+}
+
+/* Wavify 用: 波のサイズ計算用（画面外で寸法だけ確保） */
+.wavify-container {
+  position: absolute;
+  width: 180px;
+  height: 20px;
+  left: -9999px;
+  top: 0;
+  pointer-events: none;
+}
+
+/* 水面の揺れテクスチャ（Wavify + TweenMax） */
+.surface-wave {
+  stroke: none;
+}
+
+.leaf-outline,
+.leaf-vein {
+  vector-effect: non-scaling-stroke;
+}
+
+/* 葉の液体変化時の揺れアニメーション */
+.leaf-container.leaf-wobble {
+  animation: leafWobble 0.6s ease-out;
+}
+@keyframes leafWobble {
+  0%   { transform: scale(1); }
+  20%  { transform: scale(1.015); }
+  40%  { transform: scale(0.99); }
+  60%  { transform: scale(1.008); }
+  80%  { transform: scale(0.998); }
+  100% { transform: scale(1); }
+}
+
+/* Bチップ: 背景はJSで感情色をセット。文字は白で統一 */
+.emotion-chip-selected {
+  font-family: var(--font-type);
+  color: #ffffff;
+  border-radius: 9999px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* スライダー棒（トラック）を感情色で表示。--track-color は JS で行ごとにセット */
+.emotion-row input[type="range"] {
+  accent-color: var(--track-color, #9ca3af);
+}
+.emotion-row input[type="range"]::-webkit-slider-runnable-track {
+  background: var(--track-color, #e5e7eb);
+  height: 0.5rem;
+  border-radius: 0.25rem;
+}
+.emotion-row input[type="range"]::-moz-range-track {
+  background: var(--track-color, #e5e7eb);
+  height: 0.5rem;
+  border-radius: 0.25rem;
+}
+.emotion-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--track-color, #6b7280);
+  cursor: pointer;
+  margin-top: -0.375rem;
+}
+.emotion-row input[type="range"]::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--track-color, #6b7280);
+  cursor: pointer;
+  border: none;
+}

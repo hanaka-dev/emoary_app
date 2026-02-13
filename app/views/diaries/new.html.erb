@@ -9,24 +9,49 @@
         <%= heroicon "arrow-left",
                         variant: :outline,
                         options: { width: 48, height: 48, class: "text-gray-500" } %>
-        <% end %>   
+        <% end %>
     </div>
     <div>
         <%= link_to help_path, class: "inline-block" do %>
             <%= heroicon "question-mark-circle",
                         variant: :outline,
                         options: { width: 48, height: 48, class: "stroke-gray-500" } %>
-        <% end %>   
+        <% end %>
     </div>
 
 </div>
 <div class="flex min-h-screen w-full h-full">
     <div class="flex-1 flex flex-col items-center justify-center min-h-[80vh] w-full">
-        <div class="w-full">
-            <%= render inline: Rails.root.join('app/assets/images/leaf.svg').read %>
+        <div class="w-full flex justify-center">
+        <%# app/assets/images/leaf.svg の形: 液体は葉形でクリップ、輪郭・葉脈は塗りつぶさず最前面 %>
+        <div class="leaf-container" id="leaf-container">
+          <div id="wavify-container" class="wavify-container" aria-hidden="true"></div>
+          <svg viewBox="0 0 180 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="leaf-svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <defs>
+              <clipPath id="leafClip">
+                <path d="M103.809 153.098C155.059 86.7867 106.709 38.8603 53.1028 20.819C3.88439 97.5282 66.2057 153.894 103.809 153.098Z"/>
+              </clipPath>
+              <linearGradient id="liquidGradient" x1="0%" y1="100%" x2="50%" y2="13.4%">
+                <stop offset="0%" stop-color="#ffec47"/>
+                <stop offset="100%" stop-color="#ffec47"/>
+              </linearGradient>
+            </defs>
+            <%# 液体: 葉形でクリップ、高さはJSでアニメ。水面の揺れは最上層のみ %>
+            <g clip-path="url(#leafClip)">
+              <rect id="liquidRect" x="0" y="154" width="180" height="0" fill="url(#liquidGradient)" class="liquid-rect"/>
+              <g id="surfaceWaveGroup" transform="translate(0, 154)">
+                <path id="surfaceWavePath" class="surface-wave" fill="#ffec47" stroke="none"/>
+              </g>
+            </g>
+            <%# 葉の輪郭（塗りつぶさない） %>
+            <path class="leaf-outline" fill="none" stroke="currentColor" stroke-width="0.8" d="M103.809 153.098C155.059 86.7867 106.709 38.8603 53.1028 20.819C3.88439 97.5282 66.2057 153.894 103.809 153.098Z"/>
+            <%# 葉脈（最前面） %>
+            <path class="leaf-vein" fill="none" stroke="currentColor" stroke-width="0.6" d="M103.547 153.727C57.0538 75.2257 53.0485 44.3699 56.8575 38.7546M58.1684 61.1642C49.098 64.4478 46.2874 57.6094 46.0159 53.7797M64.8745 74.5823C85.3973 63.0985 84.4115 51.2077 81.3532 46.6977M74.5458 99.0326C56.2828 98.5015 49.6895 88.0562 48.6757 82.8999M83.8479 119.957C111.66 102.005 109.315 82.8124 104.666 75.4598M87.9582 125.869C77.4015 128.79 69.1209 124.216 66.3002 121.564M95.6187 140.993C104.781 135.866 110.816 122.286 108.216 120.506"/>
+          </svg>
+        </div>
         </div>
     </div>
-    <div class="flex-1 flex m-2 w-full min-h-[50vh] w-[50vh] bg-gray-100 rounded-3xl p-20">
+    <div class="flex-1 flex m-2 w-full min-h-[50vh] border border-gray-600 box-shadow-md bg-gray-100 rounded-3xl p-20">
         <%= render "diary_form"%>
     </div>
 </div>

@@ -1,25 +1,26 @@
+# プルチックの感情の輪に沿った色（和色大辞典 https://www.colordic.org/w より）
 emotions:
-  1: 
+  1:
     key: joy
-    color: "#ffec47"
+    color: "#ffec47"    # 菜の花色（喜び・明るい黄）
   2:
     key: trust
-    color: "#c7dc68"
-  3: 
+    color: "#c7dc68"    # 若苗色（信頼・黄緑系）
+  3:
     key: fear
-    color: "#65318e"
+    color: "#006e54"    # 萌葱色（恐怖・緑系）
   4:
     key: surprise
-    color: "#f7fcfe"
-  5: 
+    color: "#a0d8ef"    # 空色（驚き・明るい空青）
+  5:
     key: sadness
-    color: "#164a84"
-  6: 
+    color: "#007bbb"    # 紺碧（悲しみ・青系）
+  6:
     key: disgust
-    color: "#8c6450"
-  7: 
+    color: "#65318e"    # 本紫（嫌悪・紫）
+  7:
     key: anger
-    color: "#e2041b"
-  8: 
+    color: "#e2041b"    # 猩々緋（怒り・赤）
+  8:
     key: anticipation
-    color: "#f6bfbc"
+    color: "#f39800"    # 金茶（期待・オレンジ）

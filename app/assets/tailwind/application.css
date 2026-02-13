@@ -1,16 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Cutive&family=Hepta+Slab:wght@1..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cutive&family=Hepta+Slab:wght@1..900&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cutive&family=Hepta+Slab:wght@1..900&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
-@import "tailwindcss";
-@plugin "@tailwindcss/typography";
-@plugin "@tailwindcss/forms";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-@theme {
-    --font-type: "Zilla Slab", "Hepta Slab", "Josefin Slab", serif;
-}
-/*tailwind動作テスト用に書いた。tailwindを独自にカスタマイズすらならココ！*/
-h1,h2{
-    @apply font-type;
+:root {
+  --font-type: "Zilla Slab", "Hepta Slab", "Josefin Slab", serif;
 }
 
+h1,
+h2 {
+  font-family: var(--font-type);
+}
+
+/* emoary diary emotion chips */
+.emotion-chip,
+.emotion-chip-selected {
+  border-radius: 50%;
+  font-family: var(--font-type);
+}
 

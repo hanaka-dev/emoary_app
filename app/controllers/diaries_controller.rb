@@ -1,11 +1,11 @@
 class DiariesController < ApplicationController
-    before_action :logged_in_user, only: [:create]
+    before_action :logged_in_user, only: [:new, :confirm, :create]
     
     def new
         @diary = current_user.diaries.new
     end
 
-    # 一旦入力。まだ保存しない
+    # 一旦入力。まだ保存しない（確認画面用）
     def confirm
         @diary = current_user.diaries.new(diary_params)
         render :confirm
@@ -53,6 +53,6 @@ class DiariesController < ApplicationController
 
     private
         def diary_params
-            params.require(:diary).permit(:emo1, :emo2, :emo3, :rate_1, :rate_2, :rate_3, :content)
+            params.require(:diary).permit(:emo_1, :emo_2, :emo_3, :rate_1, :rate_2, :rate_3, :content)
         end
 end
