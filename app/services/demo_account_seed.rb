@@ -33,15 +33,11 @@ class DemoAccountSeed
 
     22.times do |i|
       day = start_date + i.days
+      emotions = random_emotion_bundle(i)
       Time.use_zone(zone) do
         t = Time.zone.local(day.year, day.month, day.day, 10, 0, 0)
         user.diaries.create!(
-          emo_1: (i % 8) + 1,
-          emo_2: nil,
-          emo_3: nil,
-          rate_1: 100,
-          rate_2: nil,
-          rate_3: nil,
+          **emotions,
           content: "Demo leaf #{i + 1}",
           flag: true,
           day_no: i + 1,
@@ -56,4 +52,33 @@ class DemoAccountSeed
     Rails.logger.info "DemoAccountSeed: #{email} — #{user.diaries.where(demo_seed: true).count} seed diaries"
     user
   end
+
+  # 葉ごとに 1〜3 感情・割合が変わる「ランダムっぽさ」。シード固定でデプロイのたびに同じ並びになる。
+  def self.random_emotion_bundle(index)
+    rng = Random.new(20_240_601 + index * 97)
+    pool = (1..8).to_a.shuffle(random: rng)
+    n = rng.rand(1..3)
+
+    if n == 1
+      {
+        emo_1: pool[0], emo_2: nil, emo_3: nil,
+        rate_1: 100, rate_2: nil, rate_3: nil
+      }
+    elsif n == 2
+      r1 = rng.rand(1..99)
+      {
+        emo_1: pool[0], emo_2: pool[1], emo_3: nil,
+        rate_1: r1, rate_2: 100 - r1, rate_3: nil
+      }
+    else
+      r1 = rng.rand(1..96)
+      r2 = rng.rand(1..(99 - r1))
+      r3 = 100 - r1 - r2
+      {
+        emo_1: pool[0], emo_2: pool[1], emo_3: pool[2],
+        rate_1: r1, rate_2: r2, rate_3: r3
+      }
+    end
+  end
+  private_class_method :random_emotion_bundle
 end
