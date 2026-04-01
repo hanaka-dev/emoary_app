@@ -3,8 +3,20 @@ class SessionsController < ApplicationController
   end
 
   # 公開デモ（パスワード入力なし）。Remember me は付けない。
+  # ビルド時に DB に繋げず demo:ensure がスキップされても、ここで一度 DemoAccountSeed を走らせて修復する。
   def create_demo
-    user = User.find_by(demo_account: true)
+    begin
+      DemoAccountSeed.ensure!(force_rebuild: false)
+    rescue StandardError => e
+      Rails.logger.error "[create_demo] DemoAccountSeed failed: #{e.class}: #{e.message}"
+      flash[:danger] = "Demo account could not be prepared. Please try again later."
+      redirect_to root_path, status: :see_other
+      return
+    end
+
+    demo_email = ENV["DEMO_ACCOUNT_EMAIL"].to_s.downcase.strip.presence || "demo@emoary.app"
+    user = User.find_by(demo_account: true) || User.find_by(email: demo_email)
+
     unless user&.activated?
       flash[:danger] = "Demo account is not available."
       redirect_to root_path, status: :see_other
@@ -18,8 +30,10 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(email: params[:session][:email].downcase)
-    if @user &.authenticate(params[:session][:password])
+    email = params[:session][:email].to_s.downcase.strip
+    password = params[:session][:password].to_s
+    @user = User.find_by(email: email)
+    if @user&.authenticate(password)
       if @user.activated?
         # ユーザーログイン後にホームにリダイレクトする
         reset_session
