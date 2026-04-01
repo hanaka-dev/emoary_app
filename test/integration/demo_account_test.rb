@@ -35,7 +35,18 @@ class DemoAccountTest < ActionDispatch::IntegrationTest
 
   test "logout deletes only non-demo_seed diaries" do
     post demo_login_path
-    assert_equal 2, @demo.reload.diaries.count
+    # デモログイン時に前回の追加分は既に消える
+    assert_equal 1, @demo.reload.diaries.count
+
+    assert_difference -> { @demo.reload.diaries.count }, 1 do
+      post diaries_path, params: {
+        diary: {
+          emo_1: 3, emo_2: nil, emo_3: nil, rate_1: 100, rate_2: nil, rate_3: nil,
+          content: "session extra"
+        }
+      }
+    end
+    assert_response :redirect
 
     delete logout_path
     follow_redirect!

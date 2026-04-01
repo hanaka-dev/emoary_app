@@ -22,6 +22,10 @@ class SessionsController < ApplicationController
       redirect_to root_path, status: :see_other
       return
     end
+
+    # 前回セッションの追加分を捨ててからログイン（ブラウザを閉じずに再デモした場合の掃除）
+    user.purge_non_demo_seed_diaries!
+
     reset_session
     forget(user)
     log_in user

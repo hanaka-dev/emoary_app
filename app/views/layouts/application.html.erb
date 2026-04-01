@@ -6,6 +6,9 @@
     <meta charset="utf-8">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <% if respond_to?(:logged_in?) && logged_in? && current_user.demo_account? %>
+      <meta name="emoary-demo-tab-purge-url" content="<%= demo_purge_extras_path %>">
+    <% end %>
     
     <%= javascript_importmap_tags %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
