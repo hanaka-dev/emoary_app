@@ -7,9 +7,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Cutive&family=Hepta+Slab:wght@1..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cutive&family=Hepta+Slab:wght@1..900&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cutive&family=Hepta+Slab:wght@1..900&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Droid+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :root {
   --font-type: "Zilla Slab", "Hepta Slab", "Josefin Slab", serif;
+}
+
+.font-type {
+  font-family: var(--font-type);
 }
 
 h1,
@@ -17,7 +22,16 @@ h2 {
   font-family: var(--font-type);
 }
 
-/* emoary Aチップ: 背景・文字固定。ホバー時はBチップ同様の感情色に（--chip-hover-color をビューでセット） */
+/* 日記ページ: ビューポートぴったりに収めつつ比率維持（JSで scale 適用） */
+.diary-viewport-fit {
+  position: relative;
+  width: 100%;
+}
+.diary-page-scalable {
+  width: 100%;
+}
+
+/* emoary Aチップ: 背景・文字固定。幅はスライダー群と同じ幅を3等分（gap-x-4 を除く） */
 .emotion-chip {
   font-family: var(--font-type);
   background-color: #8d6449;
@@ -27,8 +41,23 @@ h2 {
   overflow: hidden;
   transition: background-color 0.2s ease;
 }
+.emotion-chip-width {
+  flex: 0 0 calc((100% - 2rem) / 3);
+  min-width: 0;
+}
+@media (max-width: 640px) {
+  .emotion-chip-width {
+    flex: 0 0 100%;
+  }
+}
 .emotion-chip:hover {
   background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), var(--chip-hover-color, #8d6449);
+}
+/* 3つ選択済みのときの未選択チップ: クリック不可・視覚的に無効 */
+.emotion-chip.emotion-chip-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Aチップ選択時: 茶色に半透明の黒を重ねた背景（やや暗め）。チェックマークを左に、ラベルは残り領域の中央 */
@@ -55,11 +84,43 @@ h2 {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
+/* チップ内ラベルを記号側に1/5だけ寄せる（未選択は＋が右→右に1/5、選択時はチェックが左→左に1/5） */
+.emotion-chip .chip-label-spacer-left {
+  flex: 0 0 20%;
+  min-width: 0;
+}
+.emotion-chip .chip-label-spacer-right {
+  flex: 0 0 0;
+  min-width: 0;
+}
+.emotion-chip.selected .chip-label-spacer-left {
+  flex: 0 0 0;
+}
+.emotion-chip.selected .chip-label-spacer-right {
+  flex: 0 0 20%;
+}
+
 /* 葉: leaf.svg の形。diaries/UI ブランチに合わせ width:100% max-width:600px */
 .leaf-container {
   position: relative;
   width: 100%;
   max-width: 600px;
+}
+
+/* 確認画面: 葉をコンパクトに（見出し縮小分、やや大きめに調整可） */
+.confirm-leaf-scale .leaf-container {
+  max-width: min(236px, 54vw);
+}
+@media (min-width: 640px) {
+  .confirm-leaf-scale .leaf-container {
+    max-width: 268px;
+  }
+}
+
+/* 確認画面（読み取り専用）: スライダーつまみをグレーで固定表示と明示 */
+#diary-form-root.diary-form-readonly .slider-thumb-visual {
+  background: #9ca3af;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12);
 }
 
 .leaf-svg {
@@ -111,35 +172,300 @@ h2 {
   overflow: hidden;
 }
 
-/* スライダー棒（トラック）を感情色で表示。--track-color は JS で行ごとにセット */
+/* スライダー: 参照デザイン（太め・白つまみ・触っているときだけ値ツールチップ表示） */
+.slider-row {
+  position: relative;
+}
+.slider-track-wrap {
+  position: relative;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+/* スライダー右の常時表示用値チップ（枠 #8D6449・太さはトラックと一致・幅は3桁で固定） */
+.slider-value-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem; /* 100 のときの長さで固定 */
+  height: 1.625rem;
+  padding: 0;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #8d6449;
+  border-radius: 500px;
+  font-family: "Droid Serif", serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #000;
+  flex-shrink: 0;
+  /* スライダー入力の margin 分だけチップを下にずらして中心線を一致 */
+  margin-top: 0.25rem;
+}
+/* range の高さをトラックと一致させ、デフォルト余白を消してオーバーレイと位置を一致させる */
 .emotion-row input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: 0;
+  border: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 1.625rem;
+  margin: 14px 0 20px;
+  border-radius: 500px;
+  transition: box-shadow 0.2s ease-in-out;
   accent-color: var(--track-color, #9ca3af);
 }
+/* トラック（バー）: 高さ固定・input の高さと同じに */
 .emotion-row input[type="range"]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  appearance: none;
   background: var(--track-color, #e5e7eb);
-  height: 0.5rem;
-  border-radius: 0.25rem;
+  height: 1.625rem;
+  border-radius: 500px;
 }
 .emotion-row input[type="range"]::-moz-range-track {
   background: var(--track-color, #e5e7eb);
-  height: 0.5rem;
-  border-radius: 0.25rem;
+  height: 1.625rem;
+  border-radius: 500px;
 }
+/* つまみ: 透明（視覚は .slider-thumb-visual）・トラック中央に来るよう margin-top */
 .emotion-row input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 50%;
-  background: var(--track-color, #6b7280);
-  cursor: pointer;
-  margin-top: -0.375rem;
+  background: transparent;
+  cursor: ew-resize;
+  margin-top: calc((1.625rem - 1.5rem) / 2);
+  box-shadow: none;
+  transition: transform 0.2s ease-out;
 }
 .emotion-row input[type="range"]::-moz-range-thumb {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 50%;
-  background: var(--track-color, #6b7280);
-  cursor: pointer;
+  background: transparent;
+  cursor: ew-resize;
   border: none;
+  box-shadow: none;
+  transition: transform 0.2s ease-out;
+}
+/* 共通: トラック中心線をスライダー本体と一致させる（margin 14px に合わせる） */
+.slider-track-wrap {
+  --slider-track-top: 14px;
+  --slider-center-y: calc(var(--slider-track-top) + 1.625rem / 2);
+}
+/* 10刻み目盛り: 同一中心線・10〜90%の9本・50%のみ長さ1rem、他は短め・色は --tick-color */
+.slider-ticks {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: calc(var(--slider-center-y) - 1.625rem / 2);
+  height: 1.625rem;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.slider-tick {
+  position: absolute;
+  width: 2px;
+  height: 0.75rem;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--tick-color, #543e2c);
+  border-radius: 1px;
+}
+.slider-tick:nth-child(5) { height: 1rem; }
+.slider-tick:nth-child(1) { left: calc(12px + (100% - 24px) * 0.1); }
+.slider-tick:nth-child(2) { left: calc(12px + (100% - 24px) * 0.2); }
+.slider-tick:nth-child(3) { left: calc(12px + (100% - 24px) * 0.3); }
+.slider-tick:nth-child(4) { left: calc(12px + (100% - 24px) * 0.4); }
+.slider-tick:nth-child(5) { left: calc(12px + (100% - 24px) * 0.5); }
+.slider-tick:nth-child(6) { left: calc(12px + (100% - 24px) * 0.6); }
+.slider-tick:nth-child(7) { left: calc(12px + (100% - 24px) * 0.7); }
+.slider-tick:nth-child(8) { left: calc(12px + (100% - 24px) * 0.8); }
+.slider-tick:nth-child(9) { left: calc(12px + (100% - 24px) * 0.9); }
+/* つまみの見た目（白円）・0/100でもトラック内に収まるよう移動範囲を 24px〜100%-24px に */
+.slider-thumb-visual {
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  left: calc(24px + (100% - 48px) * var(--thumb-pct, 0) / 100 - 0.75rem);
+  top: calc(var(--slider-center-y) - 0.75rem);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  transition: transform 0.2s ease-out;
+}
+.slider-thumb-visual.slider-thumb-bump {
+  transition: transform 0.25s ease-out;
+}
+/* 反縁: つまみの「一番遠く」の位置に表示・120度分の弧 */
+.slider-anti-border {
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  left: calc(24px + (100% - 48px) * var(--thumb-pct, 0) / 100 - 0.75rem);
+  top: calc(var(--slider-center-y) - 0.75rem);
+  border-radius: 50%;
+  border: 3px solid transparent;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease-out, transform 0.2s ease-out;
+}
+/* 右方向: 時計の1-5の位置（120度の弧） */
+.slider-anti-border.slider-anti-border-visible.slider-anti-border-right {
+  border-right-color: var(--tick-color, #543e2c);
+  opacity: 1;
+  -webkit-mask-image: conic-gradient(from -90deg, transparent 120deg, black 120deg, black 240deg, transparent 240deg);
+  mask-image: conic-gradient(from -90deg, transparent 120deg, black 120deg, black 240deg, transparent 240deg);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+/* 左方向: 時計の7-11の位置（120度の弧） */
+.slider-anti-border.slider-anti-border-visible.slider-anti-border-left {
+  border-left-color: var(--tick-color, #543e2c);
+  opacity: 1;
+  -webkit-mask-image: conic-gradient(from 90deg, transparent 120deg, black 120deg, black 240deg, transparent 240deg);
+  mask-image: conic-gradient(from 90deg, transparent 120deg, black 120deg, black 240deg, transparent 240deg);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+/* 値ツールチップ用コンテナ（スライダー・つまみの「下」に表示・雫型） */
+.slider-value-container {
+  position: absolute;
+  top: 100%;
+  left: 12px;
+  right: 12px;
+  height: 40px;
+  margin-top: 4px;
+  pointer-events: none;
+}
+/* つまみの下に出る雫型バブル（触っているときだけ表示・とがりは上向きでつまみに接する） */
+.slider-value-bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  transition: margin-top 0.15s ease-in-out, opacity 0.15s ease-in-out;
+  z-index: 1;
+}
+.slider-value-bubble .slider-value-text {
+  position: relative;
+  z-index: 1;
+}
+/* 雫型: とがりを上向きに（つまみの下でつまみに接する）・色はそのまま --bubble-color */
+.slider-value-bubble span.shape {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: var(--bubble-color, linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), #6b7280);
+  border-radius: 0 50% 50% 50%;
+  transform: rotate(45deg);
+  z-index: -1;
+}
+/* スライダー非アクティブ時はツールチップを非表示 */
+.emotion-row input[type="range"]:not(:active):not(:focus) ~ .slider-value-container .slider-value-bubble {
+  opacity: 0;
+  margin-top: -50px;
+  pointer-events: none;
+}
+
+/* 葉UI下: バリデーションメッセージ（不正データ時） */
+.validation-message-wrap {
+  max-width: 320px;
+}
+.validation-message-wrap.hidden {
+  display: none !important;
+}
+.validation-message-box {
+  position: relative;
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  border: 2px solid rgba(0, 130, 206, 0.75);
+  box-sizing: border-box;
+}
+.validation-message-box::before,
+.validation-message-box::after {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(0, 130, 206, 0.75);
+  border-radius: 1rem;
+  box-sizing: border-box;
+  pointer-events: none;
+  animation: validationPulsate 2s linear infinite;
+}
+.validation-message-box::after {
+  animation-delay: 1s;
+}
+.validation-message-box > * {
+  position: relative;
+  z-index: 1;
+}
+@keyframes validationPulsate {
+  0% {
+    transform: scaleX(1) scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1.2) scaleY(1.45);
+    opacity: 0;
+  }
+}
+.validation-message-text {
+  font-family: var(--font-type);
+  font-size: 1.0625rem;
+  line-height: 1.4;
+}
+.validation-message-ok {
+  background-color: #2B6436;
+  color: #fff;
+}
+.validation-message-ok:hover {
+  background-color: #234a2b;
+}
+.validation-message-ok:focus {
+  outline: 2px solid #2B6436;
+  outline-offset: 2px;
+}
+
+/* ホーム成長 SVG（インライン出力時は元ファイルの style タグを含めないためここで補う） */
+.home-growth-svg svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.home-growth-svg .vein path {
+  stroke: #000000;
+}
+/* 日記がまだ無いスロット: 塗りなし・輪郭と葉脈のみ */
+.home-growth-svg .home-growth-slot--empty .leaf path {
+  fill: none;
+  stroke: #000000;
+}
+.home-growth .svg-container:only-child {
+  max-width: 1000px;
 }

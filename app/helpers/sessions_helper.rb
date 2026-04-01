@@ -51,7 +51,9 @@ module SessionsHelper
 
     # 現在のユーザーをログアウトする
     def log_out
-        forget(current_user)
+        user = current_user
+        user&.purge_non_demo_seed_diaries!
+        forget(user) if user
         reset_session
         @current_user = nil
     end

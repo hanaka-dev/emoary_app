@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   #sessionsのルーティング
   get '/login',       to: "sessions#new"
   post '/login',      to: "sessions#create"
+  post '/demo_login', to: "sessions#create_demo", as: :demo_login
   delete '/logout',   to: "sessions#destroy"
   
   resources :users, only: [:new,:create, :show, :destroy, :edit, :update]

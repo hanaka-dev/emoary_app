@@ -1,87 +1,46 @@
 <% provide(:title, "Confirm Diary") %>
-<% provide(:button_text, "Save") %>
+<%
+  back_diary = {
+    emo_1: @diary.emo_1,
+    emo_2: @diary.emo_2,
+    emo_3: @diary.emo_3,
+    rate_1: @diary.rate_1,
+    rate_2: @diary.rate_2,
+    rate_3: @diary.rate_3,
+    content: @diary.content
+  }
+%>
 
-<div class="min-h-screen">
-  <div class="flex justify-between">
+<%# 葉・フォーム: 横は max-w-2xl。←・? は日記ページ（new）と同じ justify-between + ml-2 mt-2。 %>
+<div class="w-full max-w-2xl mx-auto px-4 sm:px-5 flex flex-col py-4 sm:py-6 box-border">
+  <div class="flex justify-between shrink-0">
     <div class="ml-2 mt-2">
-      <%= link_to new_diary_path, class: "inline-block" do %>
+      <%= link_to new_diary_path(diary: back_diary), class: "inline-block" do %>
         <%= heroicon "arrow-left",
                      variant: :outline,
                      options: { width: 48, height: 48, class: "text-gray-500" } %>
       <% end %>
     </div>
-  </div>
-
-  <div class="flex min-h-screen w-full h-full">
-    <div class="flex-1 flex flex-col items-center justify-center min-h-[80vh] w-full">
-      <div class="w-full">
-        <%= render inline: Rails.root.join('app/assets/images/leaf.svg').read %>
-      </div>
-    </div>
-
-    <div class="flex-1 flex m-2 w-full min-h-[50vh] bg-gray-100 rounded-3xl p-10">
-      <div class="w-full space-y-6">
-        <h1 class="text-2xl font-semibold text-center mb-4">Confirm your diary</h1>
-
-        <div>
-          <h2 class="font-medium mb-2">Emotions &amp; rates</h2>
-          <ul class="space-y-1">
-            <% [1, 2, 3].each do |n| %>
-              <% emo = @diary.public_send("emo_#{n}") %>
-              <% rate = @diary.public_send("rate_#{n}") %>
-              <% next if emo.blank? || rate.blank? %>
-              <% data = EMOTIONS[emo] %>
-              <% key = data[:key] || data["key"] %>
-              <% color = data[:color] || data["color"] %>
-              <li class="flex items-center gap-2">
-                <span class="inline-flex items-center px-3 py-1 rounded-full border text-sm"
-                      style="color: <%= color %>">
-                  <%= I18n.t("emotions.#{key}") %>
-                </span>
-                <span class="text-sm text-gray-700">
-                  <%= rate %>%
-                </span>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-
-        <div>
-          <h2 class="font-medium mb-2">Event</h2>
-          <p class="text-sm text-gray-800 bg-white rounded-md p-3 min-h-[3rem]">
-            <%= @diary.content.presence || "-" %>
-          </p>
-        </div>
-
-        <div class="flex flex-col gap-2 mt-8">
-          <%= form_with(model: @diary, url: diaries_path, method: :post) do |f| %>
-            <%= f.hidden_field :emo_1 %>
-            <%= f.hidden_field :emo_2 %>
-            <%= f.hidden_field :emo_3 %>
-            <%= f.hidden_field :rate_1 %>
-            <%= f.hidden_field :rate_2 %>
-            <%= f.hidden_field :rate_3 %>
-            <%= f.hidden_field :content %>
-
-            <%= f.submit "Save",
-                         class: "text-white bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center" %>
-          <% end %>
-
-          <%= form_with(model: @diary, url: new_diary_path, method: :get) do |f| %>
-            <%= f.hidden_field :emo_1 %>
-            <%= f.hidden_field :emo_2 %>
-            <%= f.hidden_field :emo_3 %>
-            <%= f.hidden_field :rate_1 %>
-            <%= f.hidden_field :rate_2 %>
-            <%= f.hidden_field :rate_3 %>
-            <%= f.hidden_field :content %>
-
-            <%= f.submit "Back",
-                         class: "text-black bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center mt-2" %>
-          <% end %>
-        </div>
-      </div>
+    <div>
+      <%= link_to help_path, class: "inline-block" do %>
+        <%= heroicon "question-mark-circle",
+                     variant: :outline,
+                     options: { width: 48, height: 48, class: "stroke-gray-500" } %>
+      <% end %>
     </div>
   </div>
+  <div class="w-full flex justify-center">
+    <div class="confirm-leaf-scale w-full flex justify-center">
+      <%= render "diary_leaf" %>
+    </div>
+  </div>
+
+  <div class="w-full mt-2">
+    <div class="bg-white rounded-3xl border border-gray-200 shadow-md px-4 py-6 sm:px-8 sm:py-8 mx-auto w-full max-w-full">
+      <%= render "diary_form", readonly: true %>
+    </div>
+  </div>
+
+  <%= render "diary_save_modal" %>
+  <%= javascript_include_tag "diary_confirm_save", type: "module" %>
 </div>
-

@@ -1,6 +1,7 @@
 module ApplicationHelper
     # アイコン表示用ヘルパー
     include Heroicon::Engine.helpers
+    include HomeGrowthHelper
 
     #ページごとの完全なタイトルを返す                           #コメント行
     def full_title(page_title = "")                         #メソッド定義とオプション引数

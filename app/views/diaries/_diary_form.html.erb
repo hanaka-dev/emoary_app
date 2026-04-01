@@ -1,8 +1,12 @@
+<% readonly = local_assigns.fetch(:readonly, false) %>
+<% form_url = readonly ? diaries_path : confirm_diaries_path %>
+<%# DotLottie の src（絶対 URL）。アニメ JSON は public/lottie/success_animation.json %>
+<% default_lottie_src = "#{request.base_url}/lottie/success_animation.json" %>
+<% form_html = readonly ? { data: { diary_save_modal: true, lottie_src: default_lottie_src } } : {} %>
 
-<%= form_with(model: @diary, url: confirm_diaries_path, class: "w-full") do |f| %>
-  <%= render "shared/error_messages", object: f.object %>
+<%= form_with(model: @diary, url: form_url, class: "w-full", html: form_html) do |f| %>
+  <%= render "shared/error_messages", object: f.object unless readonly %>
 
-  <%# 隠しフィールド（選択された感情IDと割合をサーバーに送る） %>
   <%= f.hidden_field :emo_1, id: "diary_emo_1" %>
   <%= f.hidden_field :emo_2, id: "diary_emo_2" %>
   <%= f.hidden_field :emo_3, id: "diary_emo_3" %>
@@ -10,34 +14,40 @@
   <%= f.hidden_field :rate_2, id: "diary_rate_2" %>
   <%= f.hidden_field :rate_3, id: "diary_rate_3" %>
 
-  <h1 class="text-4xl text-center mb-6 font-type">Choose your emotion !</h1>
+  <h1 class="text-center mb-6 font-type <%= readonly ? "text-3xl" : "text-4xl" %>">
+    <%= readonly ? "Confirm your diary!" : "Choose your emotion !" %>
+  </h1>
 
   <div id="diary-form-root"
-       class="flex flex-col w-full font-type"
-       data-max-emotions="3">
+       class="flex flex-col w-full font-type<%= " diary-form-readonly" if readonly %>"
+       data-max-emotions="3"
+       data-form-readonly="<%= readonly %>">
 
-    <%# 感情チップ一覧（レスポンシブ: 幅に応じて折り返し。100%で4x2、50%で2x4など） %>
-    <div class="emotion-chips-container flex flex-wrap gap-x-4 gap-y-3 my-4">
+    <%# readonly 時も DOM にチップを残し、JS の初期復元（chips.find）に使う。画面上は非表示。 %>
+    <div class="emotion-chips-container flex flex-wrap justify-start gap-x-4 gap-y-4 mt-4 mb-2 w-full <%= "hidden" if readonly %>">
       <% EMOTIONS.each do |id, data| %>
         <% key   = data[:key] || data["key"] %>
         <% color = data[:color] || data["color"] %>
         <button
           type="button"
-          class="emotion-chip flex items-center justify-between gap-2 px-4 py-2 border text-base transition-all w-36 min-h-9 shrink-0"
+          class="emotion-chip flex items-center justify-between gap-2 px-4 py-2 border text-base transition-all min-h-9 emotion-chip-width"
           style="--chip-hover-color: <%= color %>"
           data-emotion-id="<%= id %>"
           data-emotion-name="<%= I18n.t("emotions.#{key}") %>"
           data-emotion-color="<%= color %>">
-          <span class="chip-label-wrap flex-1 flex justify-center items-center min-w-0">
-            <span class="chip-label"><%= I18n.t("emotions.#{key}") %></span>
+          <span class="chip-label-wrap flex-1 flex items-center min-w-0">
+            <span class="chip-label-spacer chip-label-spacer-left"></span>
+            <span class="chip-label-center flex-1 flex justify-center items-center min-w-0">
+              <span class="chip-label"><%= I18n.t("emotions.#{key}") %></span>
+            </span>
+            <span class="chip-label-spacer chip-label-spacer-right"></span>
           </span>
           <span class="chip-icon text-4xl leading-none shrink-0">+</span>
         </button>
       <% end %>
     </div>
 
-    <%# 選択された感情ごとのスライダー行（左: チップ / 右: スライダー） %>
-    <div id="emotion-sliders" class="flex flex-col gap-6 my-8">
+    <div id="emotion-sliders" class="flex flex-col gap-6 <%= readonly ? "mt-2" : "mt-9" %> mb-4">
       <% 3.times do |i| %>
         <% idx = i + 1 %>
         <div class="emotion-row flex items-center gap-4"
@@ -49,39 +59,53 @@
               <span class="chip-label-wrap flex-1 flex justify-center items-center min-w-0">
                 <span class="selected-chip-label"></span>
               </span>
-              <button type="button"
-                      class="selected-chip-remove text-4xl leading-none shrink-0"
-                      aria-label="Remove emotion">
-                ×
-              </button>
+              <% unless readonly %>
+                <button type="button"
+                        class="selected-chip-remove text-4xl leading-none shrink-0"
+                        aria-label="Remove emotion">
+                  ×
+                </button>
+              <% end %>
             </span>
           </div>
-          <div class="flex-1 flex items-center gap-2">
-            <input type="range"
-                   min="1"
-                   max="100"
-                   value="33"
-                   class="emotion-slider w-full"
-                   data-role="slider"
-                   data-slot-index="<%= idx %>">
-            <span class="w-10 text-right text-sm"
-                  data-role="slider-value">33</span>
+          <div class="flex-1 flex items-center gap-2 slider-row">
+            <div class="slider-track-wrap flex-1 min-w-0" data-role="slider-wrap">
+              <input type="range"
+                     min="0"
+                     max="100"
+                     step="10"
+                     value="0"
+                     class="emotion-slider w-full<%= " opacity-90 cursor-default" if readonly %>"
+                     data-role="slider"
+                     data-slot-index="<%= idx %>"
+                     <%= "disabled" if readonly %>>
+              <div class="slider-ticks" data-role="slider-ticks" aria-hidden="true">
+                <% 9.times do %><span class="slider-tick" data-role="slider-tick"></span><% end %>
+              </div>
+              <div class="slider-thumb-visual" data-role="slider-thumb-visual" aria-hidden="true"></div>
+              <div class="slider-anti-border" data-role="slider-anti-border" aria-hidden="true"></div>
+              <div class="slider-value-container" data-role="slider-value-container">
+                <span class="slider-value-bubble" data-role="slider-value-bubble"><span class="slider-value-text" data-role="slider-value-text">0</span><span class="shape"></span></span>
+              </div>
+            </div>
+            <span class="slider-value-chip shrink-0" data-role="slider-value-chip">0</span>
           </div>
         </div>
       <% end %>
     </div>
 
-    <div class="mb-5 flex-col my-10">
+    <div class="mb-5 flex-col mt-5">
       <%= f.label :content, "Event", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
       <%= f.text_field :content,
-                       class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
-                       placeholder: "What happens, today?" %>
+                       class: "bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 #{readonly ? "text-gray-500 dark:text-gray-400 cursor-default focus:ring-0 focus:border-gray-300" : "text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"}",
+                       placeholder: (readonly ? nil : "What happens, today?"),
+                       readonly: readonly %>
     </div>
   </div>
 
   <div class="flex flex-col">
-    <%= f.submit yield(:button_text),
-                 class: "text-white bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 block my-2" %>
+    <%= f.submit(readonly ? "Save" : yield(:button_text),
+                 class: "text-white bg-black hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 block my-2") %>
   </div>
 <% end %>
 

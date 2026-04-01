@@ -1,5 +1,13 @@
 <% provide(:title, "Home") %>
 
+<%# デバッグ用（本番前に削除可）: 左下固定・小さく・操作を邪魔しない %>
+<div class="fixed bottom-3 left-3 z-[5] max-w-[min(100%,16rem)] rounded bg-black/40 px-2 py-1 text-[10px] leading-tight text-white/80 font-mono tabular-nums pointer-events-none select-none backdrop-blur-sm" title="debug" aria-hidden="true">
+  <span class="text-white/50">debug</span>
+  葉（日記）総数 <%= current_user.diaries.count %>
+  <% flagged = current_user.diaries.where(flag: true).count %>
+  · 代表(flag=1) <%= flagged %>
+</div>
+
 <section class="relative min-h-screen">
     <div>
         <div class="absolute top-[3%] right-[3%]">
@@ -32,10 +40,7 @@
         </div>
         <div class="flex min-h-screen">
             <div class="justify-center mx-auto my-auto w-[60%] ">
-                        <%#= render inline: Rails.root.join('app/assets/images/sprout.svg').read %>
-                        <%#= render inline: Rails.root.join('app/assets/images/leaves.svg').read %>
-                        <%= render inline: Rails.root.join('app/assets/images/tree.svg').read %>
-
+                <%= render partial: "static_pages/home_growth" %>
             </div>
         </div>
     </div>

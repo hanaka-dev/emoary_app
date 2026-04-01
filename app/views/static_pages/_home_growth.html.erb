@@ -1,0 +1,19 @@
+<% diaries = @home_diaries || [] %>
+<% phase = home_growth_phase_for(diaries.size) %>
+<div class="home-growth w-full max-w-[1100px] mx-auto">
+  <% case phase %>
+  <% when :sprout %>
+    <%= render_home_growth_svg("sprout", home_growth_slot_map_sprout(diaries), "hg_spr",
+          wrapper_class: "svg-container home-growth-svg w-full max-w-[1000px] mx-auto") %>
+  <% when :leaves %>
+    <div class="flex flex-row flex-wrap justify-center items-end gap-1 sm:gap-3 w-full">
+      <% 3.times do |b| %>
+        <%= render_home_growth_svg("leaves", home_growth_slot_map_leaves_branch(diaries, b), "hg_b#{b}",
+              wrapper_class: "svg-container home-growth-svg flex-1 min-w-[200px] max-w-[340px] mx-auto") %>
+      <% end %>
+    </div>
+  <% else %>
+    <%= render_home_growth_svg("tree", home_growth_slot_map_tree(diaries), "hg_tree",
+          wrapper_class: "svg-container home-growth-svg w-full max-w-[1000px] mx-auto") %>
+  <% end %>
+</div>

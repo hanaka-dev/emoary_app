@@ -1,0 +1,19 @@
+<%# Save 押下時: DotLottie は canvas（左）→ 文言（右）。flex-row で常にアニメが左。 %>
+<div id="diary-save-modal"
+     class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/45 backdrop-blur-[2px]"
+     aria-hidden="true"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="diary-save-modal-title">
+  <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 max-w-lg w-full p-5 sm:p-7 flex flex-row flex-wrap items-center justify-center gap-5 sm:gap-6">
+    <canvas id="diary-save-dotlottie-canvas"
+            width="300"
+            height="300"
+            class="w-36 h-36 sm:w-44 sm:h-44 max-w-full shrink-0"
+            aria-hidden="true"></canvas>
+    <p id="diary-save-modal-title"
+       class="text-green-800 font-type text-xl sm:text-2xl text-center sm:text-left leading-snug shrink-0 max-w-[16rem] sm:max-w-none min-w-0">
+      Your new leaf has sprouted!
+    </p>
+  </div>
+</div>

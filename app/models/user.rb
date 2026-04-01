@@ -1,6 +1,13 @@
 class User < ApplicationRecord
     has_many :diaries, dependent: :destroy
 
+    # デモアカウント（ログアウト時に demo_seed でない日記を捨てる）
+    def purge_non_demo_seed_diaries!
+      return unless demo_account?
+
+      diaries.where(demo_seed: false).delete_all
+    end
+
     attr_accessor :remember_token, :activation_token, :reset_token
     before_save     :downcase_email
     before_create   :create_activation_digest
@@ -78,6 +85,13 @@ class User < ApplicationRecord
     # パスワード再設定の期限が切れている場合はtrueを返す
     def password_reset_expired?
         reset_sent_at < 2.hours.ago
+    end
+
+    # 日記の「今日」「同日」判定に使う IANA タイムゾーン名（無効なら東京）
+    def timezone_for_diaries
+        tz = read_attribute(:timezone)
+        z = Time.find_zone(tz)
+        z ? z.name : "Asia/Tokyo"
     end
 
 

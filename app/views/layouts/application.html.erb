@@ -12,9 +12,10 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
   </head>
 
-  <body class="bg-green-50 min-h-full">
-    <main class="container mx-auto my-auto">
-      <div class="flex flex-col min-h-full">
+  <body class="bg-green-50 min-h-screen flex flex-col">
+    <main class="container mx-auto flex flex-1 flex-col min-h-0 w-full max-w-full">
+      <%# フラッシュは上固定。メインコンテンツは残り高さで縦方向センター（短い画面で上下に余白）。長いコンテンツはスクロール。 %>
+      <div class="shrink-0 w-full">
         <% flash.each do |type, message| %>
           <% css =
               case type.to_sym
@@ -30,9 +31,12 @@
             <%= message %>
           </div>
         <% end %>
-        <%= yield %>
       </div>
-      <%= debug(params) if Rails.env.development? %>
+      <div class="flex flex-1 flex-col min-h-0 w-full overflow-y-auto">
+        <div class="w-full max-w-full shrink-0 my-auto">
+          <%= yield %>
+        </div>
+      </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
     <script src="/wavify.js"></script>

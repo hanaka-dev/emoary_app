@@ -9,6 +9,7 @@ class DiariesControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference "Diary.count" do
       post diaries_path, params: {  diary: {  content: "Lorem ipsum"  } }
     end
-    assert_redirected_to login_path
+    # logged_in_user は未ログイン時 root_path（ログイン画面）へ飛ばす
+    assert_redirected_to root_url
   end
 end

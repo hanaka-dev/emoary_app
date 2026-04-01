@@ -27,7 +27,9 @@ class DiaryTest < ActiveSupport::TestCase
     assert_not @diary.valid?
   end
 
-  test "flag should be present" do
+  test "flag should be true or false (false must be valid for same-day extra entries)" do
+    @diary.flag = false
+    assert @diary.valid?, @diary.errors.full_messages.to_sentence
     @diary.flag = nil
     assert_not @diary.valid?
   end

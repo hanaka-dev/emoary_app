@@ -1,9 +1,15 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:show, :edit, :update, :destroy]
+  before_action :reject_demo_account_profile_changes, only: [:edit, :update, :destroy]
 
   # ユーザー情報の表示(Settings)
   def show
     @user = current_user
+    if current_user.demo_account? && params[:edit].present?
+      flash[:warning] = "Demo account cannot change profile settings."
+      redirect_to settings_path, status: :see_other
+      return
+    end
     @edit_mode = params[:edit].present?
   end
 
@@ -46,8 +52,15 @@ class UsersController < ApplicationController
   end
 
   private
+    def reject_demo_account_profile_changes
+      return unless current_user.demo_account?
+
+      flash[:warning] = "Demo account cannot be edited or deleted."
+      redirect_to settings_path, status: :see_other
+    end
+
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+        params.require(:user).permit(:name, :email, :password, :password_confirmation, :timezone)
     end
 end
 

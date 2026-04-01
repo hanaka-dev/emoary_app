@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_09_17_105540) do
+ActiveRecord::Schema[7.0].define(version: 2026_04_02_120000) do
   create_table "diaries", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "emo_1", null: false
@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_17_105540) do
     t.integer "seq_no", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "demo_seed", default: false, null: false
     t.index ["user_id", "day_no", "seq_no"], name: "index_diaries_on_user_id_and_day_no_and_seq_no", unique: true
     t.index ["user_id"], name: "index_diaries_on_user_id"
   end
@@ -41,6 +42,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_17_105540) do
     t.datetime "activated_at"
     t.string "reset_digest"
     t.datetime "reset_sent_at"
+    t.string "timezone", default: "Asia/Tokyo", null: false
+    t.boolean "demo_account", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
